@@ -1,34 +1,59 @@
-import React, { useContext, useState } from 'react';
-import './Profile.css'
-import { useParams } from 'react-router-dom';
-import { AppContext } from '../../Contexts/AppContext';
+import React, { useContext, useState , useEffect } from "react";
+import "./Profile.css";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../../Contexts/AppContext";
 
-async function updateUserProfile(details){
-const firebaseApiUrl = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7GCCKM_2dSth5NlthsSwreUly8H9D_-8`;
 
-try {
-  const response = await fetch(firebaseApiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(details)
-  });
-  const data = await response.json();
-  console.log(data); // contains the updated user profile data
-} catch (error) {
-  console.error(error); // handle update error
+async function updateUserProfile(details) {
+  const firebaseApiUrl = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7GCCKM_2dSth5NlthsSwreUly8H9D_-8`;
+
+  try {
+    const response = await fetch(firebaseApiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(details),
+    });
+    const data = await response.json();
+    console.log(data); // contains the updated user profile data
+  } catch (error) {
+    console.error(error); // handle update error
+  }
 }
-}
 
+async function getUserProfile(idToken , ctx) {
+    const firebaseApiUrl = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyB7GCCKM_2dSth5NlthsSwreUly8H9D_-8`;
+  
+    try {
+      const response = await fetch(firebaseApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({idToken:idToken}),
+      });
+      const data = await response.json();
+      ctx.setDisplayName(data.users[0].displayName);
+      ctx.setDisplayImage(data.users[0].photoUrl)
+      ctx.setEmail(data.users[0].email)
+      console.log(data); // contains the updated user profile data
+    } catch (error) {
+      console.error(error); // handle update error
+    }
+  }
+  
 
 
 function ProfilePage(props) {
-    const ctx = useContext(AppContext)
-    const params = useParams()
+  const ctx = useContext(AppContext);
+  const params = useParams();
 
-  const [newName, setNewName] = useState('');
-  const [newImage, setNewImage] = useState('');
+  const [newName, setNewName] = useState("");
+  const [newImage, setNewImage] = useState("");
+  useEffect(()=>{
+    getUserProfile(ctx.idToken , ctx)
+  },[ctx])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -41,19 +66,19 @@ function ProfilePage(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const details = {
-        displayName: newName,
-        photoUrl: newImage,
-        idToken: ctx.idToken,
-        returnSecureToken: true
-      };
-    updateUserProfile(details)  ;
+      displayName: newName,
+      photoUrl: newImage,
+      idToken: ctx.idToken,
+      returnSecureToken: true,
+    };
+    updateUserProfile(details);
     ctx.setDisplayName(newName);
     ctx.setDisplayImage(newImage);
-    setNewImage('');
-    setNewName('')
+    setNewImage("");
+    setNewName("");
   };
-  if(params.idToken !== ctx.idToken ){
-    return <p>Page Not Found</p>
+  if (params.idToken !== ctx.idToken) {
+    return <p>Page Not Found</p>;
   }
 
   return (
@@ -72,6 +97,7 @@ function ProfilePage(props) {
             id="name-input"
             value={newName}
             onChange={handleNameChange}
+            required
           />
           <label htmlFor="image-input">Profile Picture URL:</label>
           <input
@@ -79,6 +105,7 @@ function ProfilePage(props) {
             id="image-input"
             value={newImage}
             onChange={handleImageChange}
+            required
           />
           <button type="submit">Update Profile</button>
         </form>

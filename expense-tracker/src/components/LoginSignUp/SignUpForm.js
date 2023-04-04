@@ -29,6 +29,7 @@ async function signUp(signupData, isLogIn , Actions ) {
        Actions.context.setDisplayName(data.displayName)
        Actions.context.setDisplayImage(data.profilePicture)
        Actions.context.setidToken(data.idToken)
+       localStorage.setItem('idToken' , data.idToken)
        console.log(data)
       }else{
         Actions.setIsLogin(true)
@@ -84,6 +85,7 @@ function SignupForm(props) {
         <label>
           Email:
           <input
+            id="email-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
