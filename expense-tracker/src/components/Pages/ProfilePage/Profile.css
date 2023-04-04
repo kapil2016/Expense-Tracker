@@ -61,4 +61,19 @@
     padding: 10px;
     cursor: pointer;
   }
+  .verify-email-button {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .email-verified-icon {
+    color: green;
+    margin-left: 20px;
+    font-size: 30px;
+  }
   
