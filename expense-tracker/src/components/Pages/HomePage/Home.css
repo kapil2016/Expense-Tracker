@@ -2,9 +2,9 @@
     display: flex;
     width: 100vw;
     height: 60px;
-    padding-left: 20px;
+    padding: 20px 20px;
     border-bottom: 2px solid gray;
-    flex-direction: column;
-    justify-content: center;
-    transform: skew(-15deg);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }

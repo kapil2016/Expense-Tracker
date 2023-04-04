@@ -72,7 +72,7 @@
   .signup-card button:hover {
     background-color: #005fa3;
   }
-  .login-card {
+  .login-card{
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -98,8 +98,9 @@
     transition: all 0.2s ease-in-out;
   }
    */
-  /* .login-button:hover {
-    background-color: #005fa3;
+  .login-card:hover {
+    background-color: #eff5fa;
+    cursor: pointer;
   }
-   */
+  
   

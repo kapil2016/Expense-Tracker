@@ -22,12 +22,16 @@ async function signUp(signupData, isLogIn , Actions ) {
       alert(data.error.message);
       // console.log(data.error.message)
     }else{
-      if(isLogIn){
+      if(data.registered){
        Actions.navto(`/home/${data.idToken}`)
-       Actions.LoggedIn(true);
-       Actions.idToken(data.idToken)
+       Actions.context.setIsLoggedIn(true)
+       Actions.context.setEmail(data.email)
+       Actions.context.setDisplayName(data.displayName)
+       Actions.context.setDisplayImage(data.profilePicture)
+       Actions.context.setidToken(data.idToken)
+       console.log(data)
       }else{
-
+        Actions.setIsLogin(true)
       }
 
     }
@@ -47,21 +51,22 @@ function SignupForm(props) {
   const ctx = useContext(AppContext)
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     const userDetails = {
       email: email,
       password: password,
       returnSecureToken: true,
     };
-    event.preventDefault();
+    
+    const actions = {navto:navto, context:ctx , setIsLogin:setIsLogin}
     if (isLogIn) {
-      const actions = {navto:navto, LoggedIn : ctx.setIsLoggedIn , idToken:ctx.setidToken}
       signUp(userDetails, isLogIn , actions);
       setEmail("");
       setPassword("");
       setConfirmPassword("");
     } else {
       if (password === confirmPassword) {
-        signUp(userDetails, isLogIn);
+        signUp(userDetails, isLogIn , actions);
       } else {
         alert("password mismatch");
       }
