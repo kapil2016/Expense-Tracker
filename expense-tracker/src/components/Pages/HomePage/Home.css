@@ -1,0 +1,10 @@
+.welcome{
+    display: flex;
+    width: 100vw;
+    height: 60px;
+    padding-left: 20px;
+    border-bottom: 2px solid gray;
+    flex-direction: column;
+    justify-content: center;
+    transform: skew(-15deg);
+}
