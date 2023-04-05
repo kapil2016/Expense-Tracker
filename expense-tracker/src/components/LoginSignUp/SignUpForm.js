@@ -51,6 +51,7 @@ function SignupForm(props) {
   const navto = useNavigate();
   const ctx = useContext(AppContext)
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const userDetails = {

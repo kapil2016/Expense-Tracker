@@ -8,3 +8,11 @@
     justify-content: space-between;
     align-items: center;
 }
+.button-logout{
+    background-color: #021f3e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;   
+}

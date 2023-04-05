@@ -63,7 +63,9 @@ try {
     },
     body: JSON.stringify(requestData)
   });
-
+  if(response.ok){
+    alert('check your email to verify')
+  }
   const data = await response.json();
   console.log(data); // contains the response data
 } catch (error) {
