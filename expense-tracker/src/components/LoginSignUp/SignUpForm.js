@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "./SignUpForm.css";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../Contexts/AppContext";
-async function signUp(signupData, isLogIn , Actions ) {
+async function signUp(signupData, isLogIn, Actions) {
   let url =
     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB7GCCKM_2dSth5NlthsSwreUly8H9D_-8";
   if (isLogIn) {
@@ -21,20 +21,19 @@ async function signUp(signupData, isLogIn , Actions ) {
     if (data.error) {
       alert(data.error.message);
       // console.log(data.error.message)
-    }else{
-      if(data.registered){
-       Actions.navto(`/home/${data.idToken}`)
-       Actions.context.setIsLoggedIn(true)
-       Actions.context.setEmail(data.email)
-       Actions.context.setDisplayName(data.displayName)
-       Actions.context.setDisplayImage(data.profilePicture)
-       Actions.context.setidToken(data.idToken)
-       localStorage.setItem('idToken' , data.idToken)
-       console.log(data)
-      }else{
-        Actions.setIsLogin(true)
+    } else {
+      if (data.registered) {
+        Actions.navto(`/home/${data.idToken}`);
+        Actions.context.setIsLoggedIn(true);
+        Actions.context.setEmail(data.email);
+        Actions.context.setDisplayName(data.displayName);
+        Actions.context.setDisplayImage(data.profilePicture);
+        Actions.context.setidToken(data.idToken);
+        localStorage.setItem("idToken", data.idToken);
+        console.log(data);
+      } else {
+        Actions.setIsLogin(true);
       }
-
     }
 
     console.log(data); // contains the Firebase ID token, refresh token, and other user data
@@ -49,8 +48,7 @@ function SignupForm(props) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogIn, setIsLogin] = useState(false);
   const navto = useNavigate();
-  const ctx = useContext(AppContext)
-
+  const ctx = useContext(AppContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -59,16 +57,16 @@ function SignupForm(props) {
       password: password,
       returnSecureToken: true,
     };
-    
-    const actions = {navto:navto, context:ctx , setIsLogin:setIsLogin}
+
+    const actions = { navto: navto, context: ctx, setIsLogin: setIsLogin };
     if (isLogIn) {
-      signUp(userDetails, isLogIn , actions);
+      signUp(userDetails, isLogIn, actions);
       setEmail("");
       setPassword("");
       setConfirmPassword("");
     } else {
       if (password === confirmPassword) {
-        signUp(userDetails, isLogIn , actions);
+        signUp(userDetails, isLogIn, actions);
       } else {
         alert("password mismatch");
       }
@@ -115,11 +113,18 @@ function SignupForm(props) {
         )}
         <button type="submit">{`${isLogIn ? "Login" : "Sign Up"}`}</button>
       </form>
+      {isLogIn ? (
+        <p class="forgot-password">
+          <a href="/forgot-password">Forgot password?</a>
+        </p>
+      ) : (
+        ""
+      )}
       <button className="login-card" onClick={handleLoginClick}>
-          <p className="login-text">{`${
-            isLogIn ? "Create New Account" : "Already Have An Account ? Login"
-          }`}</p>
-        </button>
+        <p className="login-text">{`${
+          isLogIn ? "Create New Account" : "Already Have An Account ? Login"
+        }`}</p>
+      </button>
     </div>
   );
 }
