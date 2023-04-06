@@ -15,18 +15,21 @@
   .signup-form input {
     padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    font-size: medium;
   }
   
   .signup-form button[type="submit"] {
     background-color: #4caf50;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
     margin-top: 20px;
     cursor: pointer;
+    font-size: medium;
+    width:120px ;
   }
   
   .signup-form button[type="submit"]:hover {
@@ -63,7 +66,7 @@
     background-color: #233947;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px 20px;
     margin-top: 10px;
     cursor: pointer;

@@ -1,0 +1,85 @@
+.card {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    margin:auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90vw;
+    margin-top: 10px;
+  }
+  
+  .date {
+    display: flex;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 10px;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 10px 30px 10px 30px;
+  }
+  
+  .day {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .month {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .year {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .description {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .buttons {
+    display: flex;
+    margin-left: 10px;
+    text-align: center;
+  }
+  
+  .button {
+    background: #eee;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .editButton {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    margin-right: 5px;
+  }
+  
+  .deleteButton {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+  }
+  .deleteButton:hover{
+    background-color: #a90818;
+  }
+  
