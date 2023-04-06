@@ -14,7 +14,7 @@ const ExpenseForm = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Send data to server or store locally
-    const obj = {id:Date.now(),amount:money,description:description, category:category,date:date }
+    const obj = {amount:money,description:description, category:category,date:date }
     props.onSubmit(obj)
     // console.log({ money, description, category, date });
     // Clear form inputs

@@ -29,7 +29,9 @@ async function signUp(signupData, isLogIn, Actions) {
         Actions.context.setDisplayName(data.displayName);
         Actions.context.setDisplayImage(data.profilePicture);
         Actions.context.setidToken(data.idToken);
+        Actions.context.setUserID(data.localId)
         localStorage.setItem("idToken", data.idToken);
+        localStorage.setItem('userID' , data.localId);
         console.log(data);
       } else {
         Actions.setIsLogin(true);
@@ -114,7 +116,7 @@ function SignupForm(props) {
         <button type="submit">{`${isLogIn ? "Login" : "Sign Up"}`}</button>
       </form>
       {isLogIn ? (
-        <p class="forgot-password">
+        <p className="forgot-password">
           <a href="/forgot-password">Forgot password?</a>
         </p>
       ) : (
