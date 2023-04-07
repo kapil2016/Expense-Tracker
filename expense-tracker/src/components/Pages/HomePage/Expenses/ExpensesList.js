@@ -11,6 +11,7 @@ const ExpenseList = (props) => {
         const month = date.toLocaleString('en-US', { month: 'long' });
         const year = date.getFullYear();
         ExpensesList.push( <ExpensesCard
+            id = {key}
             key={key}
             description={expenses[key].description}
             amount={expenses[key].amount}

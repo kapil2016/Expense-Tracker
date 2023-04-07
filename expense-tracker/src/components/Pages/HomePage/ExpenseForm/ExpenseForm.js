@@ -4,12 +4,14 @@ import { FaAngleDown,FaAngleRight} from 'react-icons/fa';
 
 const categories = ['patrol', 'food', 'bills payments', 'other expense'];
 
+
 const ExpenseForm = (props) => {
   const [money, setMoney] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState(categories[0]);
   const [date, setDate] = useState('');
   const [expanded, setExpanded] = useState(false);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
