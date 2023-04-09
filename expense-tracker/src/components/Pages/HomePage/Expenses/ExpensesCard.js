@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FaPencilAlt, FaTrashAlt ,FaSave } from 'react-icons/fa';
 import styles from './ExpenseCard.module.css';
-import { AppContext } from '../../../Contexts/AppContext';
-import { useContext } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { expenseStates } from '../../../States/Reducers/expense-reducer';
+import { useSelector } from 'react-redux';
 
 
 const deleteExpense = async (idToken, userID, id) => {
@@ -52,8 +52,10 @@ const editExpense = async (idToken, userID, id ,editedData) => {
 };
 
 function ExpenseCard({ day, month, year, description, amount, id}) {
-  const ctx = useContext(AppContext);
+
   const[editCard ,setEditCard] = useState(false);
+  const idToken = useSelector(state=>state.auth.idToken)
+  const userID = useSelector(state=>state.auth.userID)
   const dispatch = useDispatch();
   const editDate = useRef();
   const editDescription = useRef();
@@ -63,7 +65,7 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
   const editExpenseHandler =()=>{
     const editedData = {amount:editAmount.current , description : editDescription.current , date:editDate.current}
      if(editCard){
-      editExpense(ctx.idToken, ctx.userID , id , editedData).then(res=>{
+      editExpense(idToken , userID , id , editedData).then(res=>{
         if(res){
           dispatch(expenseStates.addNewExpense({key:id , value:res}))
           setEditCard(false);
@@ -75,7 +77,7 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
      
   }
   const deleteExpenseHandler =()=>{
-     deleteExpense(ctx.idToken , ctx.userID , id).then((res)=>{
+     deleteExpense(idToken , userID , id).then((res)=>{
       if(res){
       dispatch(expenseStates.deleteExpense(id))
       }
