@@ -3,6 +3,8 @@ import { FaPencilAlt, FaTrashAlt ,FaSave } from 'react-icons/fa';
 import styles from './ExpenseCard.module.css';
 import { AppContext } from '../../../Contexts/AppContext';
 import { useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { expenseStates } from '../../../States/Reducers/expense-reducer';
 
 
 const deleteExpense = async (idToken, userID, id) => {
@@ -52,6 +54,7 @@ const editExpense = async (idToken, userID, id ,editedData) => {
 function ExpenseCard({ day, month, year, description, amount, id}) {
   const ctx = useContext(AppContext);
   const[editCard ,setEditCard] = useState(false);
+  const dispatch = useDispatch();
   const editDate = useRef();
   const editDescription = useRef();
   const editAmount = useRef();
@@ -62,10 +65,7 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
      if(editCard){
       editExpense(ctx.idToken, ctx.userID , id , editedData).then(res=>{
         if(res){
-          ctx.expenseList[id] = res ;
-          ctx.setExpenseList(pre=>{
-           return {...pre}
-          })
+          dispatch(expenseStates.addNewExpense({key:id , value:res}))
           setEditCard(false);
          }
       })
@@ -77,10 +77,7 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
   const deleteExpenseHandler =()=>{
      deleteExpense(ctx.idToken , ctx.userID , id).then((res)=>{
       if(res){
-       delete ctx.expenseList[id];
-       ctx.setExpenseList(pre=>{
-        return {...pre}
-       })
+      dispatch(expenseStates.deleteExpense(id))
       }
      })
   }
@@ -96,14 +93,14 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
       </div>
       <div className={styles.description}>
         {!editCard ?
-        <>{description}</> :<input type='text'value={editDescription.current} placeholder='Add Description' onChange={(e)=>{editDescription.current = e.target.value}}/>
+        <>{description}</> :<input type='text'   placeholder='Add Description'onChange={(e)=>{editDescription.current = e.target.value}} />
         }
         
         </div>
       <div className={styles.amount}>
         {!editCard?
        <> ${amount}</> :
-        <input type='number'value={editAmount.current} placeholder='Add Amount'onChange={(e)=>{editAmount.current = e.target.value}}/>
+        <input type='number'  placeholder='Add Amount'onChange={(e)=>{editAmount.current = e.target.value}}/>
         }
         
         </div>

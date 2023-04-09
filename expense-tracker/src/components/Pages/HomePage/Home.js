@@ -1,10 +1,16 @@
 import "./Home.css";
 import { useParams } from "react-router-dom";
-import { useContext} from "react";
-import { AppContext } from "../../Contexts/AppContext";
+// import { useContext} from "react";
+// import { AppContext } from "../../Contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import ExpenseForm from "./ExpenseForm/ExpenseForm";
 import ExpenseList from "./Expenses/ExpensesList";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { authStates } from "../../States/Reducers/auth-reducer";
+import { expenseStates } from "../../States/Reducers/expense-reducer";
+import { useEffect } from "react";
+import { useCallback } from "react";
 
 
 const addNewExpense = async (idToken, userID, newData) => {
@@ -33,32 +39,62 @@ const addNewExpense = async (idToken, userID, newData) => {
   }
 };
 
+const getUserData = async (idToken, userID) => {
+  try {
+    const response = await fetch(
+      `https://user-login-signup-330a7-default-rtdb.firebaseio.com/users/${userID}/expenses.json?auth=${idToken}`
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error);
+    }
+  
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
 const Home = () => {
-  const ctx = useContext(AppContext);
+  // const ctx = useContext(AppContext);
   const params = useParams();
   const navTo = useNavigate();
 
+  const idToken = useSelector(state=>state.auth.idToken)
+  const userID = useSelector(state=>state.auth.userID)
+  const expenseList = useSelector(state => state.expense.expenseList)
+  const dispatch = useDispatch();
 
-  if (params.idToken !== ctx.idToken) {
+  const fetchUserData = useCallback(async () => {
+    const data = await getUserData(idToken, userID);
+    dispatch(expenseStates.setExpenseList(data));
+  }, [idToken, userID, dispatch]);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+
+
+  if (params.idToken !== idToken) {
     return <p> Page Not Founnd !</p>;
   }
   const logoutHandler = () => {
     localStorage.setItem("idToken", "");
-    ctx.setIsLoggedIn(false);
-    ctx.setidToken(null);
+    dispatch(authStates.setLogin(false));
+    dispatch(authStates.setIdToken(''))
+    dispatch(authStates.setUserID(''))
+    // ctx.setIsLoggedIn(false);
+    // ctx.setidToken(null);
     navTo("/");
   };
   const formSubmitHandler = (obj) => {
     // setExpenseList((prevList)=>[obj,...prevList]);
-    addNewExpense(ctx.idToken, ctx.userID, obj).then((data) =>
-      ctx.setExpenseList((preData) => {
-        const newexpense = {};
-        newexpense[data] = obj;
-        // preData[data] = obj
-        return { ...newexpense, ...preData };
-      })
-    );
+    addNewExpense(idToken,userID, obj).then((data) =>{
+        //  expenseList[data] = obj 
+         dispatch(expenseStates.addNewExpense({key:data , value:obj}))
+    }
+    )
   };
 
   return (
@@ -70,16 +106,15 @@ const Home = () => {
             Logout
           </button>
           <button
-            className="login-card"
-            onClick={() => navTo(`/profile/${ctx.idToken}`)}
+            onClick={() => navTo(`/profile/${idToken}`)}
           >
-            {" "}
-            Your Profile Is Incomplete ! Complete Now{" "}
+            <div>Your Profile Is Incomplete ! Complete Now</div>
+        
           </button>
         </div>
       </div>
       <ExpenseForm onSubmit={formSubmitHandler}></ExpenseForm>
-      <ExpenseList data={ctx.expenseList}></ExpenseList>
+      <ExpenseList data={expenseList}></ExpenseList>
     </>
   );
 };
