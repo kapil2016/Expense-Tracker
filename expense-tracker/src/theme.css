@@ -1,0 +1,14 @@
+:root {
+    --primary-color: #0077ff;
+    --secondary-color: #00bfff;
+    --background-color: #f8f8f8;
+    --text-color: #333333;
+  }
+  
+  [data-theme='dark'] {
+    --primary-color: #00bfff;
+    --secondary-color: #0077ff;
+    --background-color: #1c1c1c;
+    --text-color: #f8f8f8;
+  }
+  

@@ -1,16 +1,12 @@
-import "./Home.css";
-import { useParams } from "react-router-dom";
-// import { useContext} from "react";
-// import { AppContext } from "../../Contexts/AppContext";
-import { useNavigate } from "react-router-dom";
+import styles from './Home.module.css'
+import { useParams ,useNavigate } from "react-router-dom";
 import ExpenseForm from "./ExpenseForm/ExpenseForm";
 import ExpenseList from "./Expenses/ExpensesList";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { authStates } from "../../States/Reducers/auth-reducer";
 import { expenseStates } from "../../States/Reducers/expense-reducer";
-import { useEffect } from "react";
-import { useCallback } from "react";
+import { useEffect ,useCallback } from "react";
+import PremiumCard from "./Premium/PremiumCard";
 
 
 const addNewExpense = async (idToken, userID, newData) => {
@@ -55,15 +51,22 @@ const getUserData = async (idToken, userID) => {
   }
 };
 
+const totalExpenseAmount = (expenseList)=>{
+  let totalAmount = 0 ;
+        for(let key in expenseList){
+          totalAmount += parseInt(expenseList[key].amount)
+        }
+        return totalAmount
+}
+
 
 const Home = () => {
-  // const ctx = useContext(AppContext);
   const params = useParams();
   const navTo = useNavigate();
-
   const idToken = useSelector(state=>state.auth.idToken)
   const userID = useSelector(state=>state.auth.userID)
   const expenseList = useSelector(state => state.expense.expenseList)
+  const isDarkMode = useSelector((state) => state.theme.darkMode);
   const dispatch = useDispatch();
 
   const fetchUserData = useCallback(async () => {
@@ -84,25 +87,22 @@ const Home = () => {
     dispatch(authStates.setLogin(false));
     dispatch(authStates.setIdToken(''))
     dispatch(authStates.setUserID(''))
-    // ctx.setIsLoggedIn(false);
-    // ctx.setidToken(null);
     navTo("/");
   };
   const formSubmitHandler = (obj) => {
-    // setExpenseList((prevList)=>[obj,...prevList]);
     addNewExpense(idToken,userID, obj).then((data) =>{
-        //  expenseList[data] = obj 
          dispatch(expenseStates.addNewExpense({key:data , value:obj}))
     }
     )
   };
-
+   const totalAmount = totalExpenseAmount(expenseList);
+ 
   return (
     <>
-      <div>
-        <div className="welcome">
+    <div className={[styles.card, isDarkMode ? styles.dark : ''].join(' ')} >
+        <div className={styles.welcome}>
           <p>Welcome To Expense Tracker !!! </p>
-          <button className="button-logout" onClick={logoutHandler}>
+          <button className={styles['button-logout']} onClick={logoutHandler}>
             Logout
           </button>
           <button
@@ -112,9 +112,11 @@ const Home = () => {
         
           </button>
         </div>
-      </div>
+      
+     {totalAmount>10000 && <PremiumCard></PremiumCard>}
       <ExpenseForm onSubmit={formSubmitHandler}></ExpenseForm>
       <ExpenseList data={expenseList}></ExpenseList>
+      </div>
     </>
   );
 };

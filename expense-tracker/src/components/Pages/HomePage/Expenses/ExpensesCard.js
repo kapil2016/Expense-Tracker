@@ -56,6 +56,7 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
   const[editCard ,setEditCard] = useState(false);
   const idToken = useSelector(state=>state.auth.idToken)
   const userID = useSelector(state=>state.auth.userID)
+  const isDarkMode = useSelector((state) => state.theme.darkMode);
   const dispatch = useDispatch();
   const editDate = useRef();
   const editDescription = useRef();
@@ -84,7 +85,7 @@ function ExpenseCard({ day, month, year, description, amount, id}) {
      })
   }
   return (
-    <div className={styles.card}>
+    <div className={[styles.card, isDarkMode ? styles.dark : ''].join(' ')} >
       <div className={styles.date}>
         {!editCard?
        <><div className={styles.day}>{day}</div>

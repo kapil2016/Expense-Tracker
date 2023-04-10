@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ExpenseForm.module.css';
 import { FaAngleDown,FaAngleRight} from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const categories = ['patrol', 'food', 'bills payments', 'other expense'];
 
@@ -11,6 +12,7 @@ const ExpenseForm = (props) => {
   const [category, setCategory] = useState(categories[0]);
   const [date, setDate] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const isDarkMode = useSelector((state) => state.theme.darkMode);
 
 
   const handleSubmit = (event) => {
@@ -27,7 +29,7 @@ const ExpenseForm = (props) => {
   };
 
   return (
-    <div className={styles.card}>
+    <div className={[styles.card, isDarkMode ? styles.dark : ''].join(' ')} >
         <div onClick={() => setExpanded(!expanded)} style={{display:'flex' , justifyContent:'space-around',width:'100%' ,margin:'10px' ,justifyItems:'center' ,fontSize:'60px' ,color:'green'}}>
         <h2>Add Expense</h2>
         {expanded ? (

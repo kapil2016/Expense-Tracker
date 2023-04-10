@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Profile.css";
+import styles from './Profile.module.css'
 import { useParams } from "react-router-dom";
 import { FaEnvelope, FaCheckCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -88,6 +88,7 @@ function ProfilePage(props) {
 
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
+  const isDarkMode = useSelector((state) => state.theme.darkMode);
   useEffect(()=>{
     getUserProfile(idToken).then((data) => {
       const profilDetails = {
@@ -136,10 +137,11 @@ function ProfilePage(props) {
   }
 
   return (
-    <div className="profile">
-      <div className="profile-header">
-        <img src={profile.image} alt="Profile" className="profile-image" />
-        <h1 className="profile-name">{profile.userName}</h1>
+    <div className={[styles.card, isDarkMode ? styles.dark : ''].join(' ')}>
+    <div className={styles.profile}>
+      <div className={styles['profile-header']}>
+        <img src={profile.image} alt="Profile" className={styles['profile-image']} />
+        <h1 className={styles['profile-name']}>{profile.userName}</h1>
         <div
           style={{
             display: "flex",
@@ -147,12 +149,12 @@ function ProfilePage(props) {
             alignItems: "center",
           }}
         >
-          <p className="profile-email">{profile.email}</p>
+          <p className={styles['profile-email']}>{profile.email}</p>
           {profile.isEmailVerified ? (
-            <FaCheckCircle className="email-verified-icon" />
+            <FaCheckCircle className={styles['email-verified-icon']} />
           ) : (
             <button
-              className="verify-email-button"
+              className={styles['verify-email-button']}
               onClick={() => verifyEmail(idToken)}
             >
               {" "}
@@ -161,8 +163,8 @@ function ProfilePage(props) {
           )}
         </div>
       </div>
-      <div className="profile-form">
-        <h2 className="form-header">Update Profile</h2>
+      <div className={styles['profile-form']}>
+        <h2 className={styles['form-header']}>Update Profile</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="name-input">Name:</label>
           <input
@@ -183,6 +185,7 @@ function ProfilePage(props) {
           <button type="submit">Update Profile</button>
         </form>
       </div>
+    </div>
     </div>
   );
 }

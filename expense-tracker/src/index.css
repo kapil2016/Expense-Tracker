@@ -12,4 +12,17 @@ body {
   margin: 0;
   background-color: #ffffff;
 }
+:root {
+  --primary-color: #007bff;
+  --background-color: #ffffff;
+  --text-color: #333333;
+}
+
+.dark {
+  --primary-color: #ffffff;
+  --background-color: #333333;
+  --text-color: #ffffff;
+}
+
+
 

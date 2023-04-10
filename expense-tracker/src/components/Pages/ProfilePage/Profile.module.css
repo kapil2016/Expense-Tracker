@@ -76,4 +76,14 @@
     margin-left: 20px;
     font-size: 30px;
   }
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+   
+  }
   
+.dark {
+  background-color: #333333;
+  color: #ffffff;
+}
