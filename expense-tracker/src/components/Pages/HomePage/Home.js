@@ -108,7 +108,7 @@ const Home = () => {
           <button
             onClick={() => navTo(`/profile/${idToken}`)}
           >
-            <div>Your Profile Is Incomplete ! Complete Now</div>
+            <div>Update Your Profile</div>
         
           </button>
         </div>
